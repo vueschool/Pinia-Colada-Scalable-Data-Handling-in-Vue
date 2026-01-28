@@ -20,10 +20,13 @@ const { mutate: updateProduct, asyncStatus: updateProductAsyncStatus } =
     onMutate(newProduct) {
       // added this 👇 to get the old product from the cache
       const oldProduct = queryCache.getQueryData(["product", newProduct.id]);
-      queryCache.setQueryData(["product", newProduct.id], {
-        ...newProduct,
-      });
-      console.log("onMutate", oldProduct);
+
+      // update the product in the cache
+      queryCache.setQueryData(["product", newProduct.id], newProduct);
+
+      // we cancel (without refetching) all queries that depend on the product
+      queryCache.cancelQueries({ key: ["product", newProduct.id] });
+
       // and return it for use in other hooks👇
       return { oldProduct, newProduct };
     },
@@ -41,8 +44,10 @@ const { mutate: updateProduct, asyncStatus: updateProductAsyncStatus } =
         productInfo.id,
       ]);
 
-      const hasntChanged =
-        JSON.stringify(newProduct) === JSON.stringify(productInCache);
+      // before applying the rollback, we need to check if the value in the cache
+      // is the same because the cache could have been updated by another mutation
+      // or query
+      const hasntChanged = newProduct === productInCache;
       if (hasntChanged) {
         queryCache.setQueryData(["product", productInfo.id], oldProduct);
       }

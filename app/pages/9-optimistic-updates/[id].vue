@@ -21,11 +21,11 @@ const { mutate: updateProduct, asyncStatus: updateProductAsyncStatus } =
     // added this 👇 to optimistically update the data before the mutation is settled
     onMutate(newProduct) {
       // update the product in the cache
-      queryCache.setQueryData(["product", newProduct.id], {
-        ...newProduct,
-      });
-      // we cancel (without refetching) all queries that depend on the contact
+      queryCache.setQueryData(["product", newProduct.id], newProduct);
+
+      // we cancel (without refetching) all queries that depend on the product
       queryCache.cancelQueries({ key: ["product", newProduct.id] });
+
       return { newProduct };
     },
     async onSettled(updatedProduct) {
