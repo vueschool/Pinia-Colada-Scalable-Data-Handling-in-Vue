@@ -16,6 +16,13 @@ function handleUpdateProduct() {
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
+
+watch(
+  () => props.product,
+  (newProduct) => {
+    copy.value = clone(newProduct);
+  },
+);
 </script>
 
 <template>
