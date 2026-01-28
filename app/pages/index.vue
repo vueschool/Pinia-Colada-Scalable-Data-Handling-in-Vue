@@ -31,12 +31,16 @@ const routes = [
     path: "/7-invalidating-queries-after-mutation",
   },
   {
-    label: "8. Optimistic Updates",
-    path: "/8-optimistic-updates",
+    label: "8. Should You Await or Not Await Invalidate Queries",
+    path: "/8-should-you-await-or-not-await-invalidate-queries",
   },
   {
-    label: "9. Optimistic Update Rollbacks",
-    path: "/9-optimistic-update-rollbacks",
+    label: "9. Optimistic Updates",
+    path: "/9-optimistic-updates",
+  },
+  {
+    label: "10. Optimistic Update Rollbacks",
+    path: "/10-optimistic-update-rollbacks",
   },
 ];
 </script>
