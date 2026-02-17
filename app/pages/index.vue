@@ -42,6 +42,14 @@ const routes = [
     label: "10. Optimistic Update Rollbacks",
     path: "/10-optimistic-update-rollbacks",
   },
+  {
+    label: "11. Refetching vs Refreshing Queries",
+    path: "/11-refetching-vs-refreshing-queries",
+  },
+  {
+    label: "12. Hiearchacal Query Keys",
+    path: "/12-hiearchacal-query-keys",
+  },
 ];
 </script>
 <template>
