@@ -58,6 +58,10 @@ const routes = [
     label: "14. Using Reusable Query Options",
     path: "/14-using-reusable-query-options",
   },
+  {
+    label: "15. Using Key Factories and useCache with TypeSafety",
+    path: "/15-using-key-factories-and-use-cache-with-type-safety",
+  },
 ];
 </script>
 <template>
