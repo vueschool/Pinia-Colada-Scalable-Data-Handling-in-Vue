@@ -50,6 +50,14 @@ const routes = [
     label: "12. Hiearchacal Query Keys",
     path: "/12-hiearchacal-query-keys",
   },
+  {
+    label: "13. Organizing Queries and Key Factories",
+    path: "/13-organizing-queries-and-key-factories",
+  },
+  {
+    label: "14. Using Reusable Query Options",
+    path: "/14-using-reusable-query-options",
+  },
 ];
 </script>
 <template>
