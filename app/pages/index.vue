@@ -66,6 +66,14 @@ const routes = [
     label: "16. Organizing Reusable Mutations",
     path: "/16-organizing-reusable-mutations",
   },
+  {
+    label: "17. Mutate vs mutateAsync Mutation Functions in Pinia Colada ",
+    path: "/17-mutate-vs-mutate-async",
+  },
+  {
+    label: "18. Paginated Queries",
+    path: "/18-paginated-queries",
+  },
 ];
 </script>
 <template>
