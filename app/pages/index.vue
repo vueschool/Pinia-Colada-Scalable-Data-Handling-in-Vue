@@ -62,6 +62,10 @@ const routes = [
     label: "15. Using Key Factories and useCache with TypeSafety",
     path: "/15-using-key-factories-and-use-cache-with-type-safety",
   },
+  {
+    label: "16. Organizing Reusable Mutations",
+    path: "/16-organizing-reusable-mutations",
+  },
 ];
 </script>
 <template>
