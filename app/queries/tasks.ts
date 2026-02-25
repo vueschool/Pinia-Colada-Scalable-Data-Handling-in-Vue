@@ -1,23 +1,18 @@
 export const TASKS_QUERY_KEYS = {
   root: ["tasks"] as const,
-  filtered: (filter: "all" | "completed" | "incomplete") =>
-    [...TASKS_QUERY_KEYS.root, filter] as const,
+  byId: (id: string) => [...TASKS_QUERY_KEYS.root, id] as const,
 };
 
 export const tasksListQuery = defineQueryOptions({
   key: TASKS_QUERY_KEYS.root,
-  query: async () => {
+  query: (): Promise<Task[]> => {
     return $fetch("/api/tasks");
   },
 });
 
-export const tasksFilteredQuery = defineQueryOptions(
-  (filter: "all" | "completed" | "incomplete") => ({
-    key: TASKS_QUERY_KEYS.filtered(filter),
-    query: async () => {
-      return $fetch("/api/tasks", {
-        query: { filter },
-      });
-    },
-  }),
-);
+export const taskByIdQuery = defineQueryOptions((id: string) => ({
+  key: TASKS_QUERY_KEYS.byId(id),
+  query: async () => {
+    return $fetch(`/api/tasks/${id}`);
+  },
+}));

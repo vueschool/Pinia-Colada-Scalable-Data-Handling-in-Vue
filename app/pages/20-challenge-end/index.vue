@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { tasksListQuery, taskByIdQuery } from "~/queries/tasks";
 const showNewTaskForm = ref(false);
+const { state: tasks, asyncStatus } = useQuery(tasksListQuery);
 </script>
 <template>
   <div class="page">
+    <p class="error" v-if="tasks.status === 'error'">
+      Error: {{ tasks.error.message }}
+    </p>
     <header class="header">
-      <h1 class="title">Challenge Start</h1>
+      <div class="flex items-center justify-between gap-2">
+        <h1 class="title">Task Manager</h1>
+        <Spinner v-if="asyncStatus === 'loading'" class="size-2" />
+      </div>
       <button
         class="btn btn-primary"
         @click="showNewTaskForm = !showNewTaskForm"
@@ -20,6 +28,15 @@ const showNewTaskForm = ref(false);
 </template>
 
 <style scoped>
+.error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin: 0;
+}
 .page {
   max-width: 36rem;
   margin: 0 auto;

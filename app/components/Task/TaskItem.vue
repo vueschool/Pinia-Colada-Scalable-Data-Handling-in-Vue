@@ -1,39 +1,52 @@
 <script setup lang="ts">
 import {
-  useToggleCompleteTaskMutationLocal,
-  useDeleteTaskMutation,
+  useUpdateTaskMutationLocal,
+  useDeleteTaskMutationLocal,
 } from "~/mutations/tasks";
 
 defineProps<{
   task: Task;
 }>();
 
-const { mutate: toggleComplete, asyncStatus: toggleCompleteAsyncStatus } =
-  useToggleCompleteTaskMutationLocal();
+const {
+  mutate: updateTask,
+  asyncStatus: toggleCompleteAsyncStatus,
+  error: toggleError,
+} = useUpdateTaskMutationLocal();
 
-const { mutate: removeTask, asyncStatus: deleteTaskAsyncStatus } =
-  useDeleteTaskMutation();
+const {
+  mutate: removeTask,
+  asyncStatus: deleteTaskAsyncStatus,
+  error: deleteError,
+} = useDeleteTaskMutationLocal();
 
 const isToggling = computed(
   () => toggleCompleteAsyncStatus.value === "loading",
 );
 const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
+const error = computed(() => toggleError.value || deleteError.value);
 </script>
 <template>
   <li class="task-item">
-    <div class="task-body">
+    <NuxtLink :to="`/20-challenge-end/${task.id}`" class="task-body">
       <span class="task-title">{{ task.title }}</span>
       <span class="task-description">{{ task.description }}</span>
       <span class="task-status" :class="{ completed: task.completed }">
         {{ task.completed ? "Done" : "To do" }}
       </span>
-    </div>
+    </NuxtLink>
     <div class="task-actions">
       <button
         class="btn btn-ghost"
         :class="{ 'btn-complete': task.completed }"
         :disabled="isToggling || isDeleting"
-        @click="toggleComplete(task)"
+        @click="
+          updateTask(
+            task.completed
+              ? { id: task.id, completed: 0 }
+              : { id: task.id, completed: 1 },
+          )
+        "
       >
         {{
           isToggling
@@ -44,13 +57,16 @@ const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
         }}
       </button>
       <button
-        class="btn btn-ghost"
+        class="btn btn-ghost btn-danger"
         :disabled="isToggling || isDeleting"
         @click="removeTask(task.id)"
       >
         {{ isDeleting ? "…" : "Delete" }}
       </button>
     </div>
+    <p v-if="error" class="error">
+      {{ error.message }}
+    </p>
   </li>
 </template>
 
@@ -64,6 +80,7 @@ const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
+  flex-wrap: wrap;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -79,6 +96,8 @@ const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
   flex-direction: column;
   gap: 0.25rem;
   min-width: 0;
+  text-decoration: none;
+  color: inherit;
 }
 
 .task-title {
@@ -140,7 +159,22 @@ const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
 }
 
 .btn-ghost:hover {
+  background: #f1f5f9;
+}
+
+.btn-danger:hover {
   color: #dc2626;
   background: #fef2f2;
+}
+
+.error {
+  width: 100%;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  margin: 0;
 }
 </style>

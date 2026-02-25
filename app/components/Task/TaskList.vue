@@ -1,45 +1,22 @@
 <script setup lang="ts">
-import { tasksFilteredQuery } from "~/queries/tasks";
-
-const filter = ref<"all" | "completed" | "incomplete">("all");
-const { state: tasks, asyncStatus } = useQuery(
-  tasksFilteredQuery,
-  () => filter.value,
-);
+import { tasksListQuery } from "~/queries/tasks";
+const { state: tasks, asyncStatus, error } = useQuery(tasksListQuery);
 
 const isLoading = computed(() => asyncStatus.value === "loading");
 const taskList = computed(() => tasks.value.data ?? []);
 </script>
 <template>
-  <div class="toolbar">
-    <label class="filter-label" for="filter">Filter</label>
-    <select id="filter" v-model="filter" class="select" :disabled="isLoading">
-      <option value="all">All</option>
-      <option value="completed">Completed</option>
-      <option value="incomplete">Incomplete</option>
-    </select>
-  </div>
+  <p v-if="error" class="error">Failed to load tasks: {{ error.message }}</p>
 
-  <p v-if="isLoading" class="loading">Loading tasks…</p>
-  <template v-else>
-    <ul class="task-list">
-      <TaskItem v-for="task in taskList" :key="task.id" :task="task" />
-    </ul>
-
-    <p v-if="taskList.length === 0" class="empty">
-      No tasks yet. Create one above.
-    </p>
-  </template>
+  <p v-else-if="!isLoading && taskList.length === 0" class="empty">
+    No tasks yet. Create one above.
+  </p>
+  <ul v-else class="task-list">
+    <TaskItem v-for="task in taskList" :key="task.id" :task="task" />
+  </ul>
 </template>
 
 <style scoped>
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
-}
-
 .filter-label {
   font-size: 0.875rem;
   font-weight: 500;
@@ -65,12 +42,25 @@ const taskList = computed(() => tasks.value.data ?? []);
   gap: 0.75rem;
 }
 
-.loading,
 .empty {
   text-align: center;
-  color: #94a3b8;
   font-size: 0.9375rem;
   padding: 2rem;
+  margin: 0;
+}
+
+.loading {
+  color: #94a3b8;
+  font-size: 0.9375rem;
+}
+
+.error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
   margin: 0;
 }
 </style>

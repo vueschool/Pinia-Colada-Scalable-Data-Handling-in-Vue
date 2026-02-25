@@ -22,6 +22,7 @@
     "@nuxthub/core": "0.10.5",
     "@pinia/colada": "^0.21.2",
     "@pinia/colada-nuxt": "0.3.1",
+    "@pinia/colada-plugin-delay": "^0.1.5",
     "@pinia/nuxt": "0.11.3",
     "@tailwindcss/vite": "^4.1.18",
     "drizzle-kit": "^0.31.8",
