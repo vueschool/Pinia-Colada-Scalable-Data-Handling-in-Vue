@@ -75,12 +75,8 @@ const routes = [
     path: "/18-paginated-queries",
   },
   {
-    label: "19. Challenge Start",
-    path: "/19-challenge-start",
-  },
-  {
-    label: "20. Challenge End",
-    path: "/20-challenge-end",
+    label: "20. Challenge",
+    path: "/20-challenge",
   },
 ];
 </script>

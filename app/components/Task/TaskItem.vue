@@ -28,7 +28,7 @@ const error = computed(() => toggleError.value || deleteError.value);
 </script>
 <template>
   <li class="task-item">
-    <NuxtLink :to="`/20-challenge-end/${task.id}`" class="task-body">
+    <NuxtLink :to="`/20-challenge/${task.id}`" class="task-body">
       <span class="task-title">{{ task.title }}</span>
       <span class="task-description">{{ task.description }}</span>
       <span class="task-status" :class="{ completed: task.completed }">

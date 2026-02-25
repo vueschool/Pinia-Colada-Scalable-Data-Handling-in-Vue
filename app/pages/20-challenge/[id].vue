@@ -35,13 +35,13 @@ const {
 
 async function handleSave() {
   updateTask({ id: id.value, ...form.value });
-  router.push("/20-challenge-end");
+  router.push("/20-challenge");
 }
 </script>
 <template>
   <div class="page">
     <header class="header">
-      <NuxtLink to="/20-challenge-end" class="back-link">
+      <NuxtLink to="/20-challenge" class="back-link">
         &larr; Back to tasks
       </NuxtLink>
       <div class="flex items-center gap-2">
@@ -56,7 +56,7 @@ async function handleSave() {
     <TaskForm
       v-model="form"
       @submit="handleSave"
-      @cancel="navigateTo('/20-challenge-end')"
+      @cancel="navigateTo('/20-challenge')"
     />
   </div>
 </template>
