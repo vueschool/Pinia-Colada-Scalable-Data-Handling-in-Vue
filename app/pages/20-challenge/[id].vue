@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { taskByIdQuery } from "~/queries/tasks";
-import { useUpdateTaskMutation } from "~/mutations/tasks";
-
 const route = useRoute();
 const router = useRouter();
 const id = computed(() => route.params.id?.toString() || "");
 
-const { state: taskState, asyncStatus } = useQuery(
-  taskByIdQuery,
-  () => id.value,
-);
-
-const isLoading = computed(() => asyncStatus.value === "loading");
-const task = computed(() => taskState.value.data);
-const fetchError = computed(() => taskState.value.error);
+// TODO: replace with actual status, error, and task from query
+const isLoading = computed(() => false);
+const task = computed(() => ({
+  id: "1",
+  title: "Task 1",
+  description: "Description 1",
+  completed: 0,
+}));
+const fetchError = computed((): Error | null => null);
 
 const form = ref({ title: "", description: "" });
 
@@ -27,14 +25,10 @@ watch(
   { immediate: true },
 );
 
-const {
-  mutate: updateTask,
-  asyncStatus: updateStatus,
-  error: updateError,
-} = useUpdateTaskMutation();
-
+// TODO: replace with actual error from mutation
+const updateError = computed((): Error | null => null);
 async function handleSave() {
-  updateTask({ id: id.value, ...form.value });
+  // TODO: call a mutation here to update the task
   router.push("/20-challenge-end");
 }
 </script>

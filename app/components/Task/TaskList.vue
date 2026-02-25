@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { tasksListQuery } from "~/queries/tasks";
-const { state: tasks, asyncStatus, error } = useQuery(tasksListQuery);
+// TODO: replace with actual task list from query
+const taskList = computed(() => [
+  { id: "1", title: "Task 1", description: "Description 1", completed: 0 },
+  { id: "2", title: "Task 2", description: "Description 2", completed: 0 },
+  { id: "3", title: "Task 3", description: "Description 3", completed: 0 },
+]);
 
-const isLoading = computed(() => asyncStatus.value === "loading");
-const taskList = computed(() => tasks.value.data ?? []);
+// TODO: replace with actual error and status from query
+const error = computed((): Error | null => null);
+const isLoading = computed(() => false);
 </script>
 <template>
   <p v-if="error" class="error">Failed to load tasks: {{ error.message }}</p>

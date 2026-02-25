@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { tasksListQuery } from "~/queries/tasks";
-import { useCreateTaskMutation } from "~/mutations/tasks";
-
 const showNewTaskForm = ref(false);
-const { state: tasks, asyncStatus } = useQuery(tasksListQuery);
-const { mutate: createTask } = useCreateTaskMutation();
+
+// TODO: replace with actual status from query
+const asyncStatus = ref("loading");
 
 const newTask = ref({ title: "", description: "" });
 async function createNewTask() {
-  createTask({ ...newTask.value, completed: 0 });
+  // TODO: call a mutation here to create a new task
   showNewTaskForm.value = false;
   newTask.value = { title: "", description: "" };
 }
@@ -19,9 +17,6 @@ function handleCancel() {
 </script>
 <template>
   <div class="page">
-    <p class="error" v-if="tasks.status === 'error'">
-      Error: {{ tasks.error.message }}
-    </p>
     <header class="header">
       <div class="flex items-center justify-between gap-2">
         <h1 class="title">Task Manager</h1>

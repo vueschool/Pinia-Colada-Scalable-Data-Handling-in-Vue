@@ -1,30 +1,18 @@
 <script setup lang="ts">
-import {
-  useUpdateTaskMutationLocal,
-  useDeleteTaskMutationLocal,
-} from "~/mutations/tasks";
-
 defineProps<{
   task: Task;
 }>();
 
-const {
-  mutate: updateTask,
-  asyncStatus: toggleCompleteAsyncStatus,
-  error: toggleError,
-} = useUpdateTaskMutationLocal();
+// TODO: replace with actual status from mutation
+const isToggling = computed(() => false);
+const isDeleting = computed(() => false);
+const error = computed((): Error | null => null);
 
-const {
-  mutate: removeTask,
-  asyncStatus: deleteTaskAsyncStatus,
-  error: deleteError,
-} = useDeleteTaskMutationLocal();
+// TODO: replace with mutation
+function updateTask(task: Partial<Task>) {}
 
-const isToggling = computed(
-  () => toggleCompleteAsyncStatus.value === "loading",
-);
-const isDeleting = computed(() => deleteTaskAsyncStatus.value === "loading");
-const error = computed(() => toggleError.value || deleteError.value);
+// TODO: replace with mutation
+function removeTask(id: string) {}
 </script>
 <template>
   <li class="task-item">
