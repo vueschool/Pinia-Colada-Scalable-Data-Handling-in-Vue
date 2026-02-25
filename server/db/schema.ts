@@ -1,4 +1,4 @@
-import { sqliteTable, text, real } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
 import { nanoid } from "nanoid";
 
 export const products = sqliteTable("products", {
@@ -8,4 +8,11 @@ export const products = sqliteTable("products", {
   description: text("description").notNull(),
   category: text("category").notNull(),
   image: text("image").notNull(),
+});
+
+export const tasks = sqliteTable("tasks", {
+  id: text("id").primaryKey().$defaultFn(nanoid).notNull(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  completed: integer("completed").notNull().default(0),
 });
