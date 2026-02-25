@@ -75,8 +75,8 @@ const routes = [
     path: "/18-paginated-queries",
   },
   {
-    label: "19. Challenge Start",
-    path: "/19-challenge-start",
+    label: "19. Pinia Plugins",
+    path: "/19-pinia-plugins",
   },
   {
     label: "20. Challenge End",
