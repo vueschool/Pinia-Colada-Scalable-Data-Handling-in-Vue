@@ -74,6 +74,10 @@ const routes = [
     label: "18. Paginated Queries",
     path: "/18-paginated-queries",
   },
+  {
+    label: "19. Pinia Plugins",
+    path: "/19-pinia-plugins",
+  },
 ];
 </script>
 <template>
