@@ -80,7 +80,7 @@ const routes = [
   },
   {
     label: "20. Challenge End",
-    path: "/20-challenge-end",
+    path: "/20-challenge",
   },
 ];
 </script>
