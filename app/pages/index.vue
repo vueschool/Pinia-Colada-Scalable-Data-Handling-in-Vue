@@ -79,7 +79,7 @@ const routes = [
     path: "/19-pinia-plugins",
   },
   {
-    label: "20. Challenge End",
+    label: "20. Challenge",
     path: "/20-challenge",
   },
 ];
