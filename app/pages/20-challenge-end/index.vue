@@ -1,7 +1,21 @@
 <script setup lang="ts">
-import { tasksListQuery, taskByIdQuery } from "~/queries/tasks";
+import { tasksListQuery } from "~/queries/tasks";
+import { useCreateTaskMutation } from "~/mutations/tasks";
+
 const showNewTaskForm = ref(false);
 const { state: tasks, asyncStatus } = useQuery(tasksListQuery);
+const { mutate: createTask } = useCreateTaskMutation();
+
+const newTask = ref({ title: "", description: "" });
+async function createNewTask() {
+  createTask({ ...newTask.value, completed: 0 });
+  showNewTaskForm.value = false;
+  newTask.value = { title: "", description: "" };
+}
+function handleCancel() {
+  showNewTaskForm.value = false;
+  newTask.value = { title: "", description: "" };
+}
 </script>
 <template>
   <div class="page">
@@ -21,7 +35,13 @@ const { state: tasks, asyncStatus } = useQuery(tasksListQuery);
       </button>
     </header>
 
-    <TaskForm v-if="showNewTaskForm" @submitted="showNewTaskForm = false" />
+    <TaskForm
+      v-if="showNewTaskForm"
+      v-model="newTask"
+      @submit="createNewTask"
+      @cancel="handleCancel"
+      submit-text="Create Task"
+    />
 
     <TaskList />
   </div>

@@ -7,7 +7,7 @@ export function fetchTasks(
     },
   });
 }
-export function createTask(task: Task) {
+export function createTask(task: Omit<Task, "id">) {
   return $fetch("/api/tasks", {
     method: "POST",
     body: task,
