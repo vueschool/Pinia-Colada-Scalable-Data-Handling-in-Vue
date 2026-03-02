@@ -10,18 +10,19 @@ export const useCreateTaskMutation = defineMutation(() => {
       // optimistic update the task in the list
       const key = tasksListQuery.key;
       const oldTaskList = queryCache.getQueryData<Task[]>(key) ?? [];
-      queryCache.setQueryData(key, [...oldTaskList, tempTask]);
+      const newTaskList = [...oldTaskList, tempTask];
+      queryCache.setQueryData(key, newTaskList);
       queryCache.cancelQueries({ key: key });
 
-      return { oldTaskList };
+      return { oldTaskList, newTaskList };
     },
-    onError: (_error, _task, { oldTaskList }) => {
+    onError: (_error, _task, { oldTaskList, newTaskList }) => {
       alert("Error updating the product");
-      if (!oldTaskList) return;
+      if (!oldTaskList || !newTaskList) return;
 
       // rollback the optimistic update in the all list if it hasn't changed
       const listInCache = queryCache.getQueryData(tasksListQuery.key);
-      const hasntChanged = oldTaskList === listInCache;
+      const hasntChanged = newTaskList === listInCache;
       if (hasntChanged) {
         queryCache.setQueryData(tasksListQuery.key, oldTaskList);
       }
@@ -56,12 +57,15 @@ export const useDeleteTaskMutationLocal = () => {
       return { oldTaskList, newTaskList };
     },
     onError: (_error, _id, { oldTaskList, newTaskList }) => {
+      alert("Error deleting the task");
+      if (!oldTaskList || !newTaskList) return;
+
       const key = tasksListQuery.key;
       // rollback the optimistic update if it hasn't changed
       const taskListInCache = queryCache.getQueryData(key);
       const hasntChanged = taskListInCache === newTaskList;
-      if (hasntChanged && newTaskList) {
-        queryCache.setQueryData(key, newTaskList);
+      if (hasntChanged) {
+        queryCache.setQueryData(key, oldTaskList);
       }
     },
     onSettled: () => {
@@ -108,7 +112,7 @@ export const useUpdateTaskMutationLocal = () => {
       return { oldTaskList, oldTask, newTaskList, newTask };
     },
     onError: (_error, task, { oldTaskList, oldTask, newTaskList, newTask }) => {
-      if (!oldTaskList || !oldTask) return;
+      if (!oldTaskList || !oldTask || !newTaskList || !newTask) return;
 
       const listKey = tasksListQuery.key;
       const byIdKey = taskByIdQuery(task.id).key;
