@@ -16,5 +16,5 @@ export default defineEventHandler(async (event) => {
   }
 
   const tasks = await query;
-  return tasks;
+  return tasks as Task[];
 });

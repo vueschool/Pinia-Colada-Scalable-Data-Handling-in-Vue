@@ -47,22 +47,21 @@ export const useDeleteTaskMutationLocal = () => {
 
       // optimistically remove the task from the list
       const oldTaskList = queryCache.getQueryData(key);
+      let newTaskList = oldTaskList;
       if (oldTaskList) {
-        queryCache.setQueryData(
-          key,
-          oldTaskList.filter((t) => t.id !== id),
-        );
+        newTaskList = oldTaskList.filter((t) => t.id !== id);
+        queryCache.setQueryData(key, newTaskList);
       }
       queryCache.cancelQueries({ key });
-      return { oldTaskList };
+      return { oldTaskList, newTaskList };
     },
-    onError: (_error, _id, { oldTaskList }) => {
+    onError: (_error, _id, { oldTaskList, newTaskList }) => {
       const key = tasksListQuery.key;
       // rollback the optimistic update if it hasn't changed
       const taskListInCache = queryCache.getQueryData(key);
-      const hasntChanged = taskListInCache === oldTaskList;
-      if (hasntChanged) {
-        queryCache.setQueryData(key, oldTaskList);
+      const hasntChanged = taskListInCache === newTaskList;
+      if (hasntChanged && newTaskList) {
+        queryCache.setQueryData(key, newTaskList);
       }
     },
     onSettled: () => {
@@ -86,39 +85,42 @@ export const useUpdateTaskMutationLocal = () => {
       // optimistically update the task in the list
       const listKey = tasksListQuery.key;
       const oldTaskList = queryCache.getQueryData<Task[]>(listKey);
+      let newTaskList = oldTaskList;
       if (oldTaskList) {
-        queryCache.setQueryData(
-          listKey,
-          oldTaskList.map((t) => (t.id === task.id ? { ...t, ...task } : t)),
+        newTaskList = oldTaskList.map((t) =>
+          t.id === task.id ? { ...t, ...task } : t,
         );
+        queryCache.setQueryData(listKey, newTaskList);
       }
       queryCache.cancelQueries({ key: listKey });
 
       // optimistically update the task in the by id query
       const byIdKey = taskByIdQuery(task.id).key;
       const oldTask = queryCache.getQueryData(byIdKey);
+      let newTask = oldTask;
       if (oldTask) {
-        queryCache.setQueryData(byIdKey, { ...oldTask, ...task });
+        newTask = { ...oldTask, ...task };
+        queryCache.setQueryData(byIdKey, newTask);
       }
 
       queryCache.cancelQueries({ key: byIdKey });
 
-      return { oldTaskList, oldTask };
+      return { oldTaskList, oldTask, newTaskList, newTask };
     },
-    onError: (_error, task, { oldTaskList, oldTask }) => {
+    onError: (_error, task, { oldTaskList, oldTask, newTaskList, newTask }) => {
       if (!oldTaskList || !oldTask) return;
 
       const listKey = tasksListQuery.key;
       const byIdKey = taskByIdQuery(task.id).key;
       // rollback the optimistic update of the list if it hasn't changed
       const listInCache = queryCache.getQueryData(listKey);
-      if (listInCache === oldTaskList) {
+      if (listInCache === newTaskList) {
         queryCache.setQueryData(listKey, oldTaskList);
       }
 
       // rollback the optimistic update of the by id query if it hasn't changed
       const byIdInCache = queryCache.getQueryData(byIdKey);
-      if (byIdInCache === oldTask) {
+      if (byIdInCache === newTask) {
         queryCache.setQueryData(byIdKey, oldTask);
       }
     },

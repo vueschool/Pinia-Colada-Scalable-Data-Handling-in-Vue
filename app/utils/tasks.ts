@@ -1,6 +1,4 @@
-export function fetchTasks(
-  filter: "all" | "completed" | "incomplete",
-): Promise<Task[]> {
+export function fetchTasks(filter: "all" | "completed" | "incomplete") {
   return $fetch("/api/tasks", {
     query: {
       filter,
@@ -8,7 +6,7 @@ export function fetchTasks(
   });
 }
 
-export function fetchTask(id: string): Promise<Task> {
+export function fetchTask(id: string) {
   return $fetch(`/api/tasks/${id}`);
 }
 
