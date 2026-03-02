@@ -5,9 +5,7 @@ export const TASKS_QUERY_KEYS = {
 
 export const tasksListQuery = defineQueryOptions({
   key: TASKS_QUERY_KEYS.root,
-  query: (): Promise<Task[]> => {
-    return $fetch("/api/tasks");
-  },
+  query: () => fetchTasks("all"),
 });
 
 export const taskByIdQuery = defineQueryOptions((id: string) => ({
