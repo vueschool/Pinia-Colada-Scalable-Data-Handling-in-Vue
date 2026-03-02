@@ -112,6 +112,7 @@ export const useUpdateTaskMutationLocal = () => {
       return { oldTaskList, oldTask, newTaskList, newTask };
     },
     onError: (_error, task, { oldTaskList, oldTask, newTaskList, newTask }) => {
+      alert("Error updating the task");
       if (!oldTaskList || !oldTask || !newTaskList || !newTask) return;
 
       const listKey = tasksListQuery.key;
