@@ -52,12 +52,6 @@ watch(
       type="text"
       v-model="copy.image"
     />
-
-    <input
-      class="border border-gray-300 block rounded-md p-2"
-      type="text"
-      v-model="copy.stock"
-    />
     <button class="bg-blue-500 text-white rounded-md p-2" type="submit">
       Update
     </button>
