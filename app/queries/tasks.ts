@@ -11,6 +11,6 @@ export const tasksListQuery = defineQueryOptions({
 export const taskByIdQuery = defineQueryOptions((id: string) => ({
   key: TASKS_QUERY_KEYS.byId(id),
   query: async () => {
-    return $fetch(`/api/tasks/${id}`);
+    return fetchTask(id);
   },
 }));

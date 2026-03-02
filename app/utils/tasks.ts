@@ -7,6 +7,11 @@ export function fetchTasks(
     },
   });
 }
+
+export function fetchTask(id: string): Promise<Task> {
+  return $fetch(`/api/tasks/${id}`);
+}
+
 export function createTask(task: Omit<Task, "id">) {
   return $fetch("/api/tasks", {
     method: "POST",
